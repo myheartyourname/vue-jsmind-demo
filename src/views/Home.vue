@@ -32,11 +32,22 @@
         <div><button @click="addNode">添加节点</button></div>
         <div><button @click="addImgNode">添加图片节点</button></div>
         <div><button @click="removeNode">删除节点</button></div>
+        <div><button @click="changeFontsize(24)">改变节点字体大小</button></div>
+        <div>
+          <button @click="changeFontColor('red')">改变节点字体颜色</button>
+        </div>
+        <div>
+          <button @click="changeBgColor('#f2f2f2')">改变节点背景颜色</button>
+        </div>
+        <div><button @click="changeBgImg(bg)">改变节点背景图</button></div>
       </div>
       <div class="row">
         放大缩小
         <div><button ref="zoomIn" @click="zoomIn">放大</button></div>
         <div><button ref="zoomOut" @click="zoomOut">缩小</button></div>
+      </div>
+      <div class="row">
+        <div><button @click="getData">获取数据</button></div>
       </div>
     </div>
     <div class="container" id="jsmind-container" />
@@ -48,6 +59,7 @@
 
 <script>
 import jsMind from '../utils/jsmind'
+import bg from '../assets/logo.png'
 window.jsMind = jsMind
 // eslint-disable-next-line import/first
 require('../utils/jsmind.draggable')
@@ -58,6 +70,7 @@ export default {
 
   data () {
     return {
+      bg: bg,
       xMind: null,
       mind: {},
       imageChooser: null
@@ -178,10 +191,42 @@ export default {
       this.imageChooser.focus()
       this.imageChooser.click()
     },
+    changeFontsize (fontSize) {
+      const selectedId = this.getSelectedNodeid()
+      if (!selectedId) {
+        return alert('请选择节点')
+      }
+
+      this.xMind.set_node_font_style(selectedId, fontSize)
+    },
+    changeFontColor (color) {
+      const selectedId = this.getSelectedNodeid()
+      if (!selectedId) {
+        return alert('请选择节点')
+      }
+
+      this.xMind.set_node_color(selectedId, null, color)
+    },
+    changeBgColor (color) {
+      const selectedId = this.getSelectedNodeid()
+      if (!selectedId) {
+        return alert('请选择节点')
+      }
+
+      this.xMind.set_node_color(selectedId, color, null)
+    },
+    changeBgImg (imgUrl) {
+      const selectedId = this.getSelectedNodeid()
+      if (!selectedId) {
+        return alert('请选择节点')
+      }
+
+      this.xMind.set_node_background_image(selectedId, imgUrl, 100, 100)
+    },
     removeNode () {
       const selectedId = this.getSelectedNodeid()
       if (!selectedId) {
-        alert('请选择要删除的节点')
+        return alert('请选择要删除的节点')
       }
       this.xMind.remove_node(selectedId)
     },
@@ -198,6 +243,11 @@ export default {
       } else {
         this.$refs.zoomOut.disabled = true
       }
+    },
+    getData () {
+      const mindData = this.xMind.get_data()
+      const mindString = jsMind.util.json.json2string(mindData)
+      alert(mindString)
     }
   }
 }
