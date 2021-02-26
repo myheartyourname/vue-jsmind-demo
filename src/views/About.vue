@@ -1,9 +1,11 @@
 <template>
-  <div ref="echart" id="about">
+  <div>
+    echarts图表
+    <div ref="echart" id="about" />
   </div>
 </template>
 <script>
-
+import echarts from 'echarts'
 export default {
   name: 'About',
 
@@ -19,28 +21,95 @@ export default {
 
   methods: {
     myEcharts () {
-      const echarts = require('echarts/lib/echarts')
       // 基于准备好的dom，初始化echarts实例
       const myChart = echarts.init(this.$refs.echart)
 
       // 指定图表的配置项和数据
       const option = {
         title: {
-          text: 'ECharts 入门示例'
+          text: 'ECharts的使用',
+          textStyle: {
+            fontSize: 26,
+            color: '#24d'
+          },
+          subtext: 'demo'
         },
-        tooltip: {},
+        // color: ['#2f4554', '#61a0a8'],
+        toolbox: {
+          feature: {
+            dataView: { show: true, readOnly: false },
+            restore: {},
+            saveAsImage: {}
+          }
+        },
         legend: {
-          data: ['销量']
+          data: ['2020年月度代码贡献量'],
+          textStyle: {
+            // 图例文字的样式
+            color: '#ccc',
+            fontSize: 16
+          }
         },
         xAxis: {
-          data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+          data: [
+            '1月',
+            '2月',
+            '3月',
+            '4月',
+            '5月',
+            '6月',
+            '7月',
+            '8月',
+            '9月',
+            '10月',
+            '11月',
+            '12月'
+          ]
         },
-        yAxis: {},
+        yAxis: {
+          // type: 'value'
+        },
         series: [
           {
-            name: '销量',
+            name: '2020年月度代码贡献量',
             type: 'bar',
-            data: [5, 20, 36, 10, 10, 20]
+            data: [
+              50000,
+              20000,
+              36000,
+              100000,
+              108808,
+              208886,
+              300000,
+              20090,
+              47999,
+              380933,
+              792792,
+              373333
+            ],
+            itemStyle: {
+              normal: {
+                // 这里是重点
+                color: function (params) {
+                  // 注意，如果颜色太少的话，后面颜色不会自动循环，最好多定义几个颜色
+                  var colorList = [
+                    '#c23531',
+                    '#2f4554',
+                    '#61a0a8',
+                    '#d48265',
+                    '#91c7ae',
+                    '#749f83',
+                    '#ca8622'
+                  ]
+                  // 给大于颜色数量的柱体添加循环颜色的判断
+                  if (params.dataIndex >= colorList.length) {
+                    const index = params.dataIndex - colorList.length
+                    return colorList[index]
+                  }
+                  return colorList[params.dataIndex]
+                }
+              }
+            }
           }
         ]
       }
