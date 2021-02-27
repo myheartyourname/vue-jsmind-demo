@@ -5,6 +5,7 @@ import store from './store'
 // import echarts from 'echarts'
 import '@/assets/style/jsmind.css'
 // const echarts = require('echarts')
+import 'vant/lib/index.css'
 
 Vue.config.productionTip = false
 // Vue.prototype.$echarts = echarts
