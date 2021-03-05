@@ -88,26 +88,25 @@ export default {
               373333
             ],
             itemStyle: {
-              normal: {
-                // 这里是重点
-                color: function (params) {
-                  // 注意，如果颜色太少的话，后面颜色不会自动循环，最好多定义几个颜色
-                  var colorList = [
-                    '#c23531',
-                    '#2f4554',
-                    '#61a0a8',
-                    '#d48265',
-                    '#91c7ae',
-                    '#749f83',
-                    '#ca8622'
-                  ]
-                  // 给大于颜色数量的柱体添加循环颜色的判断
-                  if (params.dataIndex >= colorList.length) {
-                    const index = params.dataIndex - colorList.length
-                    return colorList[index]
-                  }
-                  return colorList[params.dataIndex]
+              // 这里是重点
+              color: function (params) {
+                // 注意，如果颜色太少的话，后面颜色不会自动循环，最好多定义几个颜色
+                var colorList = [
+                  '#c23531',
+                  '#2f4554',
+                  '#61a0a8',
+                  '#d48265',
+                  '#91c7ae',
+                  '#749f83',
+                  '#ca8622'
+                ]
+                console.log(params.dataIndex)
+                // 给大于颜色数量的柱体添加循环颜色的判断
+                if (params.dataIndex >= colorList.length) {
+                  const index = params.dataIndex - colorList.length
+                  return colorList[index]
                 }
+                return colorList[params.dataIndex]
               }
             }
           }
